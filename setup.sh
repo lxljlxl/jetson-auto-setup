@@ -1,15 +1,23 @@
 #!/bin/bash
+set -e
 
-echo "Updating system..."
-sudo apt update && sudo apt upgrade -y
+cd /home/ubuntu
 
-echo "Installing dependencies..."
-sudo apt install -y python3-pip git docker.io
+if [ ! -d jetson-auto-setup ]; then
+    git clone https://github.com/lxljxl/jetson-auto-setup.git
+else
+    cd jetson-auto-setup
+    git pull
+    cd ..
+fi
 
-echo "Pulling project..."
-git clone https://github.com/YOUR_USERNAME/YOUR_REPO.git project
+cd /home/ubuntu/jetson-auto-setup
 
-echo "Installing Python requirements..."
-pip3 install -r project/requirements.txt
+sudo apt update
+sudo apt install -y python3-pip git
 
-echo "Setup complete!"
+if [ -f requirement.txt ]; then
+    pip3 install -r requirement.txt
+fi
+
+echo "Setup complete"
